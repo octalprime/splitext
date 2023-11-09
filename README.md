@@ -4,9 +4,9 @@ splitext is a tool to split large txt file to smaller size you like
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/octalprime/splitext)
 
-this script needs tdqm for fancy progress bars
+this script needs tqdm for fancy progress bars
 
-`pip install tdqm`
+`pip install tqdm`
 
 change the file sizes you needed to split at the end of code line
 
