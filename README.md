@@ -4,14 +4,8 @@ splitext is a tool to split large txt file to smaller size you like
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/octalprime/splitext)
 
-this script needs tqdm for fancy progress bars
+updated the script to use multithread and giving option to splits into
 
-`pip install tqdm`
+`python splitext.py filename.txt 3`
 
-change the file sizes you needed to split at the end of code line
-
-`500*1024*1024` means 500MB
-
-## how to run
-
-`python splitext.py file_name.txt`
+3 means how much parts it will split
