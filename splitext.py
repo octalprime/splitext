@@ -1,20 +1,32 @@
+import os
 import sys
 from tqdm import tqdm
+import concurrent.futures
+
+def split_file_part(args):
+    file_path, start, size, part = args
+    print(f"Processing part {part}")
+    with open(file_path, 'r') as f:
+        f.seek(start)
+        data = f.read(size)
+    with open(f'{file_path}_{part}', 'w') as f:
+        f.write(data)
+    print(f"Finished part {part}")
 
 def split_file(file_path, size_limit):
     file_size = os.path.getsize(file_path)
-    with open(file_path, 'r') as large_file:
-        count = 0
-        output_file = None
-        for line in tqdm(large_file, total=file_size, unit='B', unit_scale=True, unit_divisor=1024):
-            if output_file is None or output_file.tell() + len(line) > size_limit:
-                if output_file is not None:
-                    output_file.close()
-                count += 1
-                output_file = open(f'split_file_{count}.txt', 'w')
-            output_file.write(line)
-        if output_file is not None:
-            output_file.close()
+    parts = file_size // size_limit
+    if file_size % size_limit:
+        parts += 1  # Add extra part for the remaining data
+    print(f"Splitting {file_path} into {parts} parts")
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for part in range(parts):
+            start = part * size_limit
+            size = min(size_limit, file_size - start)
+            futures.append(executor.submit(split_file_part, (file_path, start, size, part)))
+        for future in concurrent.futures.as_completed(futures):
+            future.result()  # Raise exception if any occurred
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
