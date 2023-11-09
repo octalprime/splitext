@@ -11,3 +11,7 @@ this script needs tdqm for fancy progress bars
 change the file sizes you needed to split at the end of code line
 
 `500*1024*1024` means 500MB
+
+## how to run
+
+`python splitext.py file_name.txt`
